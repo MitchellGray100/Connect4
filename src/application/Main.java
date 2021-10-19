@@ -85,6 +85,7 @@ public class Main extends Application {
 
 		public TitleButton(int button, Stage primaryStage) {
 			this.button = button;
+			this.setStyle("-fx-focus-color: blue;");
 			this.prefWidthProperty().bind(primaryStage.widthProperty().divide(3));
 			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(12));
 			this.setOnMouseClicked(event -> {
@@ -106,6 +107,7 @@ public class Main extends Application {
 
 		public TopButtons(int column, Stage primaryStage) {
 			this.column = column;
+			this.setStyle("-fx-focus-color: blue;");
 			this.setTextAlignment(TextAlignment.CENTER);
 			this.setText("Place Piece\n Here");
 			this.prefWidthProperty().bind(primaryStage.widthProperty().divide(7));
