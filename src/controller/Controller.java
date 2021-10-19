@@ -1,18 +1,18 @@
-package board;
+package controller;
 
 import pieces.Pieces;
+import pieces.Pieces.Color;
 
-public interface Board {
-
+public interface Controller {
 	/**
 	 * Places a piece in the given column with the given color. Returns false if not
 	 * valid (valid: 0-6)
 	 * 
 	 * @param column The column to drop the piece into. Starts at 0. Invalid
 	 * @param color  The color of the piece being placed
-	 * @return returns an int indicating the row placed. -1 if not valid (Not placed if invalid move)
+	 * @return Whether or not the piece was placed. (Not placed if invalid move)
 	 */
-	public int placePiece(int column, Pieces.Color color);
+	public boolean placePiece(int column, Pieces.Color color);
 
 	/**
 	 * Chooses a column for the ai to place its piece.
@@ -31,12 +31,25 @@ public interface Board {
 	public boolean pieceEndsGame(int row, int column);
 
 	/**
-	 * Determines if the piece at the location is the same as the given color
-	 * 
-	 * @param shiftedRow    The row of the piece to check
-	 * @param shiftedColumn The column of the piece to check
-	 * @param color         the color to compare the piece's color to
-	 * @return true if same color. Return false if not
+	 * Increments the turns of the game
 	 */
-	public boolean pieceEndsGameHelper(int shiftedRow, int shiftedColumn, Pieces.Color color);
+	public void incrementTurns();
+
+	/**
+	 * Gets the turn number of the game
+	 * @return The turn number of the board.
+	 */
+	public int getTurns();
+
+	/**
+	 * Sets the color of the AI to the given color
+	 * @param color The color to set the AI to
+	 */
+	public void setAIColor(Color color);
+
+	/**
+	 * Return the color of the game's AI
+	 * @return the color of the board's AI
+	 */
+	public Color getAIColor();
 }

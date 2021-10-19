@@ -9,21 +9,23 @@ public abstract class AbstractBoard implements Board {
 	int turn = 0;
 
 	@Override
-	public boolean placePiece(int column, Color color) {
+	public int placePiece(int column, Color color) {
+		int row = -1;
 		if (column < 0 || column > 6) {
-			return false;
+			return row;
 		}
 		for (int r = 0; r < 6; r++) {
 			if (board[r][column] != null) {
-				if (column - 1 < 0) {
-					return false;
+				if (r - 1 < 0) {
+					return row;
 				} else {
-					board[r][column - 1] = new Pieces(color);
+					board[r - 1][column] = new Pieces(color);
+					row = r - 1;
 					break;
 				}
 			}
 		}
-		return true;
+		return row;
 	}
 
 	@Override
