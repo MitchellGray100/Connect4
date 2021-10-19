@@ -51,7 +51,7 @@ public class Main extends Application {
 		gameOverText.scaleYProperty().bind(primaryStage.heightProperty().divide(800));
 
 		gameOverText.translateXProperty().bind(primaryStage.widthProperty().divide(6));
-		gameOverText.translateYProperty().bind(primaryStage.heightProperty().divide(36));
+		gameOverText.translateYProperty().bind(primaryStage.heightProperty().subtract(800));
 		for (int i = 0; i < 7; i++) {
 			buttons.getChildren().add(new TopButtons(i, primaryStage));
 		}
@@ -215,6 +215,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
 			Scene titleScene = new Scene(createTitleScreen(primaryStage));
 
 			primaryStage.setMinHeight(700);
@@ -222,7 +223,6 @@ public class Main extends Application {
 			primaryStage.setMaxHeight(700);
 			primaryStage.setMaxWidth(800);
 			primaryStage.setScene(titleScene);
-			titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
 			primaryStage.getIcons().add(titleScreenImage);
 			primaryStage.show();
 
