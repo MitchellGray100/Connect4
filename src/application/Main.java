@@ -163,9 +163,10 @@ public class Main extends Application {
 								gameOverText.setFill(Color.RED);
 							}
 							controller.incrementTurns();
-							if (!gameOver) {
-								int aiColumn = controller.aiPlacePiece(Pieces.Color.YELLOW);
-								placePiece = controller.placePiece(aiColumn, Pieces.Color.YELLOW);
+
+							int aiColumn = controller.aiPlacePiece(Pieces.Color.YELLOW);
+							placePiece = controller.placePiece(aiColumn, Pieces.Color.YELLOW);
+							if (placePiece != -1 && !gameOver) {
 								tiles[placePiece][aiColumn].circle.setStroke(Color.YELLOW);
 								System.out.println(placePiece + " " + aiColumn);
 								if (controller.pieceEndsGame(placePiece, aiColumn)) {
