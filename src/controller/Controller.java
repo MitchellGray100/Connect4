@@ -10,9 +10,9 @@ public interface Controller {
 	 * 
 	 * @param column The column to drop the piece into. Starts at 0. Invalid
 	 * @param color  The color of the piece being placed
-	 * @return Whether or not the piece was placed. (Not placed if invalid move)
+	 * @return The row the piece was placed. -1 if not valid column (Not placed if invalid move)
 	 */
-	public boolean placePiece(int column, Pieces.Color color);
+	public int placePiece(int column, Pieces.Color color);
 
 	/**
 	 * Chooses a column for the ai to place its piece.

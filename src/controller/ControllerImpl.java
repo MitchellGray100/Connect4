@@ -8,7 +8,7 @@ public class ControllerImpl implements Controller {
 	AbstractBoard board = new BoardImpl();
 	
 	@Override
-	public boolean placePiece(int column, Color color) {
+	public int placePiece(int column, Color color) {
 		return board.placePiece(column, color);
 	}
 
