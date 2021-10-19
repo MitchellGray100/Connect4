@@ -33,7 +33,7 @@ public class Main extends Application {
 	private boolean buttonOnePlayerClicked;
 	private boolean buttonTwoPlayerClicked;
 
-	private Parent createContent(Stage primaryStage) throws FileNotFoundException {
+	private Parent createContent(Stage primaryStage) {
 		GridPane gameWithText = new GridPane();
 		GridPane board = new GridPane();
 
@@ -73,8 +73,10 @@ public class Main extends Application {
 		twoPlayer.setText("Two Player");
 		title.add(onePlayer, 0, 0);
 		title.add(twoPlayer, 0, 0);
-		onePlayer.translateXProperty().bind(primaryStage.widthProperty().divide(3));
-		twoPlayer.translateYProperty().bind(primaryStage.heightProperty().divide(3));
+		onePlayer.translateXProperty().bind(primaryStage.widthProperty().divide(1.5));
+		onePlayer.translateYProperty().bind(primaryStage.heightProperty().subtract(985));
+		twoPlayer.translateXProperty().bind(primaryStage.widthProperty().divide(1.5));
+		twoPlayer.translateYProperty().bind(primaryStage.heightProperty().subtract(880));
 		return title;
 	}
 
@@ -91,6 +93,10 @@ public class Main extends Application {
 				} else if (button == 1) {
 					buttonTwoPlayerClicked = true;
 				}
+
+				Scene scene = new Scene(createContent(primaryStage));
+				primaryStage.setScene(scene);
+				primaryStage.show();
 			});
 		}
 	}
@@ -107,36 +113,72 @@ public class Main extends Application {
 
 			this.setOnMouseClicked(event -> {
 				int placePiece;
-				if (controller.getTurns() % 2 == 0) {
-					placePiece = controller.placePiece(column, Pieces.Color.RED);
-					if (placePiece != -1 && !gameOver) {
-						tiles[placePiece][column].circle.setStroke(Color.RED);
-						System.out.println(placePiece + " " + column);
-						controller.incrementTurns();
-						if (controller.pieceEndsGame(placePiece, column)) {
-							gameOver = true;
-							System.out.println("Game Over. Red Wins!");
-							gameOverText.setText("GAME OVER");
-							gameOverText.setStroke(Color.BLACK);
-							gameOverText.setStrokeWidth(5);
-							gameOverText.setFont(new Font(100));
-							gameOverText.setFill(Color.RED);
+				if (buttonTwoPlayerClicked) {
+					if (controller.getTurns() % 2 == 0) {
+						placePiece = controller.placePiece(column, Pieces.Color.RED);
+						if (placePiece != -1 && !gameOver) {
+							tiles[placePiece][column].circle.setStroke(Color.RED);
+							System.out.println(placePiece + " " + column);
+							controller.incrementTurns();
+							if (controller.pieceEndsGame(placePiece, column)) {
+								gameOver = true;
+								System.out.println("Game Over. Red Wins!");
+								gameOverText.setText("GAME OVER");
+								gameOverText.setStroke(Color.BLACK);
+								gameOverText.setStrokeWidth(5);
+								gameOverText.setFont(new Font(100));
+								gameOverText.setFill(Color.RED);
+							}
+						}
+					} else {
+						placePiece = controller.placePiece(column, Pieces.Color.YELLOW);
+						if (placePiece != -1 && !gameOver) {
+							tiles[placePiece][column].circle.setStroke(Color.YELLOW);
+							System.out.println(placePiece + " " + column);
+							controller.incrementTurns();
+							if (controller.pieceEndsGame(placePiece, column)) {
+								gameOver = true;
+								System.out.println("Game Over. Yellow Wins!");
+								gameOverText.setText("GAME OVER");
+								gameOverText.setStroke(Color.BLACK);
+								gameOverText.setStrokeWidth(5);
+								gameOverText.setFont(new Font(100));
+								gameOverText.setFill(Color.YELLOW);
+							}
 						}
 					}
 				} else {
-					placePiece = controller.placePiece(column, Pieces.Color.YELLOW);
-					if (placePiece != -1 && !gameOver) {
-						tiles[placePiece][column].circle.setStroke(Color.YELLOW);
-						System.out.println(placePiece + " " + column);
-						controller.incrementTurns();
-						if (controller.pieceEndsGame(placePiece, column)) {
-							gameOver = true;
-							System.out.println("Game Over. Yellow Wins!");
-							gameOverText.setText("GAME OVER");
-							gameOverText.setStroke(Color.BLACK);
-							gameOverText.setStrokeWidth(5);
-							gameOverText.setFont(new Font(100));
-							gameOverText.setFill(Color.YELLOW);
+					if (controller.getTurns() % 2 == 0) {
+						placePiece = controller.placePiece(column, Pieces.Color.RED);
+						if (placePiece != -1 && !gameOver) {
+							tiles[placePiece][column].circle.setStroke(Color.RED);
+							System.out.println(placePiece + " " + column);
+							if (controller.pieceEndsGame(placePiece, column)) {
+								gameOver = true;
+								System.out.println("Game Over. Red Wins!");
+								gameOverText.setText("GAME OVER");
+								gameOverText.setStroke(Color.BLACK);
+								gameOverText.setStrokeWidth(5);
+								gameOverText.setFont(new Font(100));
+								gameOverText.setFill(Color.RED);
+							}
+							controller.incrementTurns();
+							if (!gameOver) {
+								int aiColumn = controller.aiPlacePiece(Pieces.Color.YELLOW);
+								placePiece = controller.placePiece(aiColumn, Pieces.Color.YELLOW);
+								tiles[placePiece][aiColumn].circle.setStroke(Color.YELLOW);
+								System.out.println(placePiece + " " + aiColumn);
+								if (controller.pieceEndsGame(placePiece, aiColumn)) {
+									gameOver = true;
+									System.out.println("Game Over. Yellow Wins!");
+									gameOverText.setText("GAME OVER");
+									gameOverText.setStroke(Color.BLACK);
+									gameOverText.setStrokeWidth(5);
+									gameOverText.setFont(new Font(100));
+									gameOverText.setFill(Color.YELLOW);
+								}
+								controller.incrementTurns();
+							}
 						}
 					}
 				}
@@ -180,11 +222,6 @@ public class Main extends Application {
 			primaryStage.setScene(titleScene);
 			primaryStage.show();
 
-			if (buttonOnePlayerClicked || buttonTwoPlayerClicked) {
-				Scene scene = new Scene(createContent(primaryStage));
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
