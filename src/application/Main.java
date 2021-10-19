@@ -63,7 +63,6 @@ public class Main extends Application {
 	}
 
 	private Parent createTitleScreen(Stage primaryStage) throws FileNotFoundException {
-		titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
 		ImageView titleScreen = new ImageView(titleScreenImage);
 		GridPane title = new GridPane();
 		title.add(titleScreen, 0, 0);
@@ -223,6 +222,8 @@ public class Main extends Application {
 			primaryStage.setMaxHeight(700);
 			primaryStage.setMaxWidth(800);
 			primaryStage.setScene(titleScene);
+			titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
+			primaryStage.getIcons().add(titleScreenImage);
 			primaryStage.show();
 
 		} catch (Exception e) {
