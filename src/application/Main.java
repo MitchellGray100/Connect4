@@ -1,10 +1,16 @@
 package application;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import controller.Controller;
+import controller.ControllerImpl;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -12,74 +18,173 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import pieces.Pieces;
 
 public class Main extends Application {
-	private Parent createContent(Stage primaryStage) {
+	private Controller controller = new ControllerImpl();
+	private boolean gameOver = false;
+	private Tile[][] tiles = new Tile[6][7];
+	private Text gameOverText = new Text();
+	private Image titleScreenImage;
+	private boolean buttonOnePlayerClicked;
+	private boolean buttonTwoPlayerClicked;
+
+	private Parent createContent(Stage primaryStage) throws FileNotFoundException {
+		GridPane gameWithText = new GridPane();
 		GridPane board = new GridPane();
+
 		HBox buttons = new HBox();
 		VBox boardWithButtons = new VBox();
-		board.setHgap(0);
-		board.setVgap(0);
-		for(int r = 0; r < 6; r++)
-		{
-			for(int c = 0; c < 7; c++)
-			{
-				board.add(new Tile(Color.WHITE,primaryStage), c, r);
+		board.setGridLinesVisible(true);
+		for (int r = 0; r < 6; r++) {
+			for (int c = 0; c < 7; c++) {
+				tiles[r][c] = new Tile(Color.WHITE, primaryStage);
+				board.add(tiles[r][c], c, r);
 			}
 		}
-		board.prefWidthProperty().bind(primaryStage.widthProperty().divide(7).multiply(6));
-		board.prefHeightProperty().bind(primaryStage.heightProperty().divide(6).multiply(5));
-		for(int i = 0; i < 7; i++)
-		{
-			buttons.getChildren().add(new TopButtons(primaryStage));
+
+		gameOverText.scaleXProperty().bind(primaryStage.widthProperty().divide(800));
+		gameOverText.scaleYProperty().bind(primaryStage.heightProperty().divide(800));
+
+		gameOverText.translateXProperty().bind(primaryStage.widthProperty().divide(6));
+		gameOverText.translateYProperty().bind(primaryStage.heightProperty().divide(36));
+		for (int i = 0; i < 7; i++) {
+			buttons.getChildren().add(new TopButtons(i, primaryStage));
 		}
-		boardWithButtons.getChildren().addAll(buttons, board);
-		
-		return boardWithButtons;
-	
+		boardWithButtons.getChildren().addAll(board, buttons);
+		gameWithText.add(boardWithButtons, 0, 0, 4, 4);
+		gameWithText.add(gameOverText, 0, 0, 4, 4);
+		return gameWithText;
+
 	}
-	
+
+	private Parent createTitleScreen(Stage primaryStage) throws FileNotFoundException {
+		titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
+		ImageView titleScreen = new ImageView(titleScreenImage);
+		GridPane title = new GridPane();
+		title.add(titleScreen, 0, 0);
+		TitleButton onePlayer = new TitleButton(0, primaryStage);
+		onePlayer.setText("One Player");
+		TitleButton twoPlayer = new TitleButton(1, primaryStage);
+		twoPlayer.setText("Two Player");
+		title.add(onePlayer, 0, 0);
+		title.add(twoPlayer, 0, 0);
+		onePlayer.translateXProperty().bind(primaryStage.widthProperty().divide(3));
+		twoPlayer.translateYProperty().bind(primaryStage.heightProperty().divide(3));
+		return title;
+	}
+
+	private class TitleButton extends Button {
+		int button;
+
+		public TitleButton(int button, Stage primaryStage) {
+			this.button = button;
+			this.prefWidthProperty().bind(primaryStage.widthProperty().divide(3));
+			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(12));
+			this.setOnMouseClicked(event -> {
+				if (button == 0) {
+					buttonOnePlayerClicked = true;
+				} else if (button == 1) {
+					buttonTwoPlayerClicked = true;
+				}
+			});
+		}
+	}
+
 	private class TopButtons extends Button {
-		public TopButtons(Stage primaryStage)
-		{
+		private int column;
+
+		public TopButtons(int column, Stage primaryStage) {
+			this.column = column;
+			this.setTextAlignment(TextAlignment.CENTER);
+			this.setText("Place Piece\n Here");
 			this.prefWidthProperty().bind(primaryStage.widthProperty().divide(7));
-			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(6));
-			
+			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(7));
+
+			this.setOnMouseClicked(event -> {
+				int placePiece;
+				if (controller.getTurns() % 2 == 0) {
+					placePiece = controller.placePiece(column, Pieces.Color.RED);
+					if (placePiece != -1 && !gameOver) {
+						tiles[placePiece][column].circle.setStroke(Color.RED);
+						System.out.println(placePiece + " " + column);
+						controller.incrementTurns();
+						if (controller.pieceEndsGame(placePiece, column)) {
+							gameOver = true;
+							System.out.println("Game Over. Red Wins!");
+							gameOverText.setText("GAME OVER");
+							gameOverText.setStroke(Color.BLACK);
+							gameOverText.setStrokeWidth(5);
+							gameOverText.setFont(new Font(100));
+							gameOverText.setFill(Color.RED);
+						}
+					}
+				} else {
+					placePiece = controller.placePiece(column, Pieces.Color.YELLOW);
+					if (placePiece != -1 && !gameOver) {
+						tiles[placePiece][column].circle.setStroke(Color.YELLOW);
+						System.out.println(placePiece + " " + column);
+						controller.incrementTurns();
+						if (controller.pieceEndsGame(placePiece, column)) {
+							gameOver = true;
+							System.out.println("Game Over. Yellow Wins!");
+							gameOverText.setText("GAME OVER");
+							gameOverText.setStroke(Color.BLACK);
+							gameOverText.setStrokeWidth(5);
+							gameOverText.setFont(new Font(100));
+							gameOverText.setFill(Color.YELLOW);
+						}
+					}
+				}
+			});
 		}
 	}
+
 	private class Tile extends StackPane {
 		private Color color;
-		private Circle circle = new Circle(40);
-		private Rectangle border = new Rectangle(100, 100);
-	//	private Circle indicator = new Circle(50, 50, 20, null);
+		private Circle circle = new Circle();
+		private Rectangle border = new Rectangle();
+		// private Circle indicator = new Circle(50, 50, 20, null);
 
 		public Tile(Color color, Stage primaryStage) {
-			circle.scaleXProperty().bind(primaryStage.widthProperty().divide(700));
-			circle.scaleYProperty().bind(primaryStage.heightProperty().divide(700));
-			border.widthProperty().bind(primaryStage.widthProperty().divide(8));
+
+			circle.scaleXProperty().bind(primaryStage.widthProperty().divide(9));
+			circle.scaleYProperty().bind(primaryStage.heightProperty().divide(9));
+			border.widthProperty().bind(primaryStage.widthProperty().divide(7.08));
 			border.heightProperty().bind(primaryStage.heightProperty().divide(7));
-			prefWidthProperty().bind(primaryStage.widthProperty().divide(8));
+			prefWidthProperty().bind(primaryStage.widthProperty().divide(7));
 			prefHeightProperty().bind(primaryStage.heightProperty().divide(7));
 //			border.widthProperty().bind(primaryStage.widthProperty().multiply(.08));
 //			border.heightProperty().bind(primaryStage.heightProperty().multiply(.1));
 			this.color = color;
 			border.setFill(Color.DARKBLUE);
-			border.setStroke(Color.DARKBLUE);
-			circle.setFill(color);
 			circle.setStroke(color);
-			//indicator.setFill(Color.RED);
-			setAlignment(Pos.CENTER);
 			getChildren().addAll(border, circle);
 
 		};
 	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Scene scene = new Scene(createContent(primaryStage));
-			primaryStage.setScene(scene);
+			Scene titleScene = new Scene(createTitleScreen(primaryStage));
+
+			primaryStage.setMinHeight(700);
+			primaryStage.setMinWidth(800);
+			primaryStage.setMaxHeight(700);
+			primaryStage.setMaxWidth(800);
+			primaryStage.setScene(titleScene);
 			primaryStage.show();
+
+			if (buttonOnePlayerClicked || buttonTwoPlayerClicked) {
+				Scene scene = new Scene(createContent(primaryStage));
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

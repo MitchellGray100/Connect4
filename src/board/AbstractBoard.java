@@ -23,14 +23,21 @@ public abstract class AbstractBoard implements Board {
 					row = r - 1;
 					break;
 				}
+			} else {
+				if (r == 5) {
+					board[r][column] = new Pieces(color);
+					row = r;
+					break;
+
+				}
 			}
+
 		}
 		return row;
 	}
 
 	@Override
 	public int aiPlacePiece(Color color) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
