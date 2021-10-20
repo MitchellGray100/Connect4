@@ -45,4 +45,13 @@ public interface Board {
 	 * @return true if same color. Return false if not
 	 */
 	public boolean pieceEndsGameHelper(int shiftedRow, int shiftedColumn, Pieces.Color color);
+
+	/**
+	 * Returns the row a piece would land if it was dropped there (valid: 0-6)
+	 * 
+	 * @param column The column to drop the piece into. Starts at 0.
+	 * @return returns an int indicating the row it would be placed. -1 if not valid
+	 *         (Not placed if invalid move)
+	 */
+	int dropAir(int column);
 }
