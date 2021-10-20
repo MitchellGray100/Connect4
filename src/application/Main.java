@@ -227,7 +227,7 @@ public class Main extends Application {
 			titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
 			Scene titleScene = new Scene(createTitleScreen(primaryStage));
 
-			primaryStage.setMinHeight(700);
+			primaryStage.setMinHeight(735);
 			primaryStage.setMinWidth(800);
 			primaryStage.setMaxHeight(700);
 			primaryStage.setMaxWidth(800);
