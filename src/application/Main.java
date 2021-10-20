@@ -32,6 +32,7 @@ public class Main extends Application {
 	private Image titleScreenImage;
 	private boolean buttonOnePlayerClicked;
 	private boolean buttonTwoPlayerClicked;
+	private TopButtons[] buttons = new TopButtons[7];
 
 	private Parent createContent(Stage primaryStage) {
 		GridPane gameWithText = new GridPane();
@@ -53,7 +54,8 @@ public class Main extends Application {
 		gameOverText.translateXProperty().bind(primaryStage.widthProperty().divide(6));
 		gameOverText.translateYProperty().bind(primaryStage.heightProperty().subtract(800));
 		for (int i = 0; i < 7; i++) {
-			buttons.getChildren().add(new TopButtons(i, primaryStage));
+			this.buttons[i] = new TopButtons(i, primaryStage);
+			buttons.getChildren().add(this.buttons[i]);
 		}
 		boardWithButtons.getChildren().addAll(board, buttons);
 		gameWithText.add(boardWithButtons, 0, 0, 4, 4);
@@ -119,6 +121,9 @@ public class Main extends Application {
 					if (controller.getTurns() % 2 == 0) {
 						placePiece = controller.placePiece(column, Pieces.Color.RED);
 						if (placePiece != -1 && !gameOver) {
+							for (int i = 0; i < 7; i++) {
+								buttons[i].setStyle("-fx-focus-color: yellow;");
+							}
 							tiles[placePiece][column].circle.setStroke(Color.RED);
 							System.out.println(placePiece + " " + column);
 							controller.incrementTurns();
@@ -135,6 +140,9 @@ public class Main extends Application {
 					} else {
 						placePiece = controller.placePiece(column, Pieces.Color.YELLOW);
 						if (placePiece != -1 && !gameOver) {
+							for (int i = 0; i < 7; i++) {
+								buttons[i].setStyle("-fx-focus-color: red;");
+							}
 							tiles[placePiece][column].circle.setStroke(Color.YELLOW);
 							System.out.println(placePiece + " " + column);
 							controller.incrementTurns();
@@ -153,6 +161,9 @@ public class Main extends Application {
 					if (controller.getTurns() % 2 == 0) {
 						placePiece = controller.placePiece(column, Pieces.Color.RED);
 						if (placePiece != -1 && !gameOver) {
+							for (int i = 0; i < 7; i++) {
+								buttons[i].setStyle("-fx-focus-color: yellow;");
+							}
 							tiles[placePiece][column].circle.setStroke(Color.RED);
 							System.out.println(placePiece + " " + column);
 							if (controller.pieceEndsGame(placePiece, column)) {
@@ -179,6 +190,9 @@ public class Main extends Application {
 									gameOverText.setStrokeWidth(5);
 									gameOverText.setFont(new Font(100));
 									gameOverText.setFill(Color.YELLOW);
+								}
+								for (int i = 0; i < 7; i++) {
+									buttons[i].setStyle("-fx-focus-color: red;");
 								}
 								controller.incrementTurns();
 							}
