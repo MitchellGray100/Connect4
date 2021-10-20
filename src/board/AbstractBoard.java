@@ -41,6 +41,11 @@ public abstract class AbstractBoard implements Board {
 		return 0;
 	}
 
+	public boolean isTieGame() {
+		return board[0][0] != null && board[0][1] != null && board[0][2] != null && board[0][3] != null
+				&& board[0][4] != null && board[0][5] != null && board[0][6] != null;
+	}
+
 	@Override
 	public boolean pieceEndsGame(int row, int column) {
 		Color color = board[row][column].getColor();

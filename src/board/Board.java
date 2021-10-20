@@ -10,7 +10,8 @@ public interface Board {
 	 * 
 	 * @param column The column to drop the piece into. Starts at 0. Invalid
 	 * @param color  The color of the piece being placed
-	 * @return returns an int indicating the row placed. -1 if not valid (Not placed if invalid move)
+	 * @return returns an int indicating the row placed. -1 if not valid (Not placed
+	 *         if invalid move)
 	 */
 	public int placePiece(int column, Pieces.Color color);
 
@@ -21,6 +22,11 @@ public interface Board {
 	 * @return returns the column to place the piece for the ai.
 	 */
 	public int aiPlacePiece(Pieces.Color color);
+
+	/**
+	 * @return returns whether or not the game is a tie
+	 */
+	public boolean isTieGame();
 
 	/**
 	 * 

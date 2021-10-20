@@ -184,6 +184,15 @@ public class Main extends Application {
 						}
 					}
 				}
+				if (controller.isTieGame() && !gameOver) {
+					gameOver = true;
+					System.out.println("Game Over. Tie Game.");
+					gameOverText.setText("GAME OVER");
+					gameOverText.setStroke(Color.BLACK);
+					gameOverText.setStrokeWidth(5);
+					gameOverText.setFont(new Font(100));
+					gameOverText.setFill(Color.ORANGE);
+				}
 			});
 		}
 	}

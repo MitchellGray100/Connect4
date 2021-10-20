@@ -10,7 +10,8 @@ public interface Controller {
 	 * 
 	 * @param column The column to drop the piece into. Starts at 0. Invalid
 	 * @param color  The color of the piece being placed
-	 * @return The row the piece was placed. -1 if not valid column (Not placed if invalid move)
+	 * @return The row the piece was placed. -1 if not valid column (Not placed if
+	 *         invalid move)
 	 */
 	public int placePiece(int column, Pieces.Color color);
 
@@ -21,6 +22,11 @@ public interface Controller {
 	 * @return returns the column to place the piece for the ai.
 	 */
 	public int aiPlacePiece(Pieces.Color color);
+
+	/**
+	 * @return returns whether or not the game is a tie
+	 */
+	public boolean isTieGame();
 
 	/**
 	 * 
@@ -37,18 +43,21 @@ public interface Controller {
 
 	/**
 	 * Gets the turn number of the game
+	 * 
 	 * @return The turn number of the board.
 	 */
 	public int getTurns();
 
 	/**
 	 * Sets the color of the AI to the given color
+	 * 
 	 * @param color The color to set the AI to
 	 */
 	public void setAIColor(Color color);
 
 	/**
 	 * Return the color of the game's AI
+	 * 
 	 * @return the color of the board's AI
 	 */
 	public Color getAIColor();

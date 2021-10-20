@@ -6,7 +6,7 @@ import pieces.Pieces.Color;
 
 public class ControllerImpl implements Controller {
 	AbstractBoard board = new BoardImpl();
-	
+
 	@Override
 	public int placePiece(int column, Color color) {
 		return board.placePiece(column, color);
@@ -23,26 +23,27 @@ public class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void incrementTurns()
-	{
+	public void incrementTurns() {
 		board.setTurn(board.getTurn() + 1);
 	}
-	
+
 	@Override
-	public int getTurns()
-	{
+	public int getTurns() {
 		return board.getTurn();
 	}
-	
+
 	@Override
-	public void setAIColor(Color color)
-	{
+	public void setAIColor(Color color) {
 		board.setAiColor(color);
 	}
-	
+
 	@Override
-	public Color getAIColor()
-	{
+	public Color getAIColor() {
 		return board.getAiColor();
+	}
+
+	@Override
+	public boolean isTieGame() {
+		return board.isTieGame();
 	}
 }
