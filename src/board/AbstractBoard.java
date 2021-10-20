@@ -132,23 +132,24 @@ public abstract class AbstractBoard implements Board {
 										aiPlacePieceHelper(droppedAir, i, 0, 1, color)),
 								aiPlacePieceHelper(droppedAir, i, 1, -1, color)),
 						aiPlacePieceHelper(droppedAir, i, 1, 0, color)), score);
-				score += Math.max(Math.max(
-						Math.max(
-								Math.max(
-										Math.max(
-												Math.max(Math.max(
-														Math.max(aiPlacePieceHelper(droppedAir, i, 1, 1, antiColor),
-																aiPlacePieceHelper(droppedAir, i, -1, -1, color)),
-														aiPlacePieceHelper(droppedAir, i, -1, 0, antiColor)),
-														aiPlacePieceHelper(droppedAir, i, -1, 1, antiColor)),
-												aiPlacePieceHelper(droppedAir, i, 0, -1, antiColor)),
-										aiPlacePieceHelper(droppedAir, i, 0, 1, antiColor)),
-								aiPlacePieceHelper(droppedAir, i, 1, -1, antiColor)),
-						aiPlacePieceHelper(droppedAir, i, 1, 0, antiColor)), score);
+				score = Math.max(Math.max(Math.max(aiPlacePieceHelper(droppedAir, i, -1, -1, antiColor) +
+						aiPlacePieceHelper(droppedAir, i, 1, 1, antiColor),
+						aiPlacePieceHelper(droppedAir, i, 1, -1, antiColor) + aiPlacePieceHelper(droppedAir, i, -1, 1, antiColor)), 
+						aiPlacePieceHelper(droppedAir, i, 0, 1, antiColor) + aiPlacePieceHelper(droppedAir, i, 0, -1, antiColor)),
+						aiPlacePieceHelper(droppedAir, i, 1, 0, antiColor) + aiPlacePieceHelper(droppedAir, i, -1, 0, antiColor));
 			}
 			if (score > maxScore) {
 				maxScore = score;
 				maxPos = i;
+			}
+			board[droppedAir][i] = null;
+			
+			board[droppedAir][i] = new Pieces(antiColor);
+			if(pieceEndsGame(droppedAir,i))
+			{
+				board[droppedAir][i] = null;
+				
+				return i;
 			}
 			board[droppedAir][i] = null;
 		}
