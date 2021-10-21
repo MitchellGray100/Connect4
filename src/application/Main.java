@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -15,6 +16,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -33,8 +36,14 @@ public class Main extends Application {
 	private boolean buttonOnePlayerClicked;
 	private boolean buttonTwoPlayerClicked;
 	private TopButtons[] buttons = new TopButtons[7];
+	private MediaPlayer clinkSoundPlayer;
+	private MediaPlayer winSoundPlayer;
+	private Media sound;
+	private Media winSound;
 
 	private Parent createContent(Stage primaryStage) {
+		clinkSoundPlayer = new MediaPlayer(sound);
+		winSoundPlayer = new MediaPlayer(winSound);
 		GridPane gameWithText = new GridPane();
 		GridPane board = new GridPane();
 
@@ -116,6 +125,8 @@ public class Main extends Application {
 			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(7));
 
 			this.setOnMouseClicked(event -> {
+
+				clinkSoundPlayer.stop();
 				int placePiece;
 				if (buttonTwoPlayerClicked) {
 					if (controller.getTurns() % 2 == 0) {
@@ -124,11 +135,13 @@ public class Main extends Application {
 							for (int i = 0; i < 7; i++) {
 								buttons[i].setStyle("-fx-focus-color: yellow;");
 							}
+							clinkSoundPlayer.play();
 							tiles[placePiece][column].circle.setStroke(Color.RED);
 							System.out.println(placePiece + " " + column);
 							controller.incrementTurns();
 							if (controller.pieceEndsGame(placePiece, column)) {
 								gameOver = true;
+								winSoundPlayer.play();
 								System.out.println("Game Over. Red Wins!");
 								gameOverText.setText("GAME OVER");
 								gameOverText.setStroke(Color.BLACK);
@@ -143,11 +156,13 @@ public class Main extends Application {
 							for (int i = 0; i < 7; i++) {
 								buttons[i].setStyle("-fx-focus-color: red;");
 							}
+							clinkSoundPlayer.play();
 							tiles[placePiece][column].circle.setStroke(Color.YELLOW);
 							System.out.println(placePiece + " " + column);
 							controller.incrementTurns();
 							if (controller.pieceEndsGame(placePiece, column)) {
 								gameOver = true;
+								winSoundPlayer.play();
 								System.out.println("Game Over. Yellow Wins!");
 								gameOverText.setText("GAME OVER");
 								gameOverText.setStroke(Color.BLACK);
@@ -164,10 +179,12 @@ public class Main extends Application {
 							for (int i = 0; i < 7; i++) {
 								buttons[i].setStyle("-fx-focus-color: yellow;");
 							}
+							clinkSoundPlayer.play();
 							tiles[placePiece][column].circle.setStroke(Color.RED);
 							System.out.println(placePiece + " " + column);
 							if (controller.pieceEndsGame(placePiece, column)) {
 								gameOver = true;
+								winSoundPlayer.play();
 								System.out.println("Game Over. Red Wins!");
 								gameOverText.setText("GAME OVER");
 								gameOverText.setStroke(Color.BLACK);
@@ -180,10 +197,12 @@ public class Main extends Application {
 							int aiColumn = controller.aiPlacePiece(Pieces.Color.YELLOW);
 							placePiece = controller.placePiece(aiColumn, Pieces.Color.YELLOW);
 							if (placePiece != -1 && !gameOver) {
+								clinkSoundPlayer.play();
 								tiles[placePiece][aiColumn].circle.setStroke(Color.YELLOW);
 								System.out.println(placePiece + " " + aiColumn);
 								if (controller.pieceEndsGame(placePiece, aiColumn)) {
 									gameOver = true;
+									winSoundPlayer.play();
 									System.out.println("Game Over. Yellow Wins!");
 									gameOverText.setText("GAME OVER");
 									gameOverText.setStroke(Color.BLACK);
@@ -201,6 +220,8 @@ public class Main extends Application {
 				}
 				if (controller.isTieGame() && !gameOver) {
 					gameOver = true;
+					winSoundPlayer.play();
+					winSoundPlayer.stop();
 					System.out.println("Game Over. Tie Game.");
 					gameOverText.setText("GAME OVER");
 					gameOverText.setStroke(Color.BLACK);
@@ -240,6 +261,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
+			sound = new Media(new File("Images/Chip Drop Sound.wav").toURI().toString());
+			winSound = new Media(new File("Images/Game Won Sound.wav").toURI().toString());
 			Scene titleScene = new Scene(createTitleScreen(primaryStage));
 
 			primaryStage.setMinHeight(735);
