@@ -89,7 +89,7 @@ public abstract class AbstractBoard implements Board {
 		} else {
 			antiColor = Color.RED;
 		}
-		int maxScore = -1;
+		int maxScore = -5000;
 		int maxPos = -1;
 		int droppedAir;
 		int droppedAir2;
