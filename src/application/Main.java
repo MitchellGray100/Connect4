@@ -44,11 +44,16 @@ public class Main extends Application {
 	private Media winSound;
 	private Media errorSound;
 	private Media buttonClickSound;
+	private RestartButton restart;
 
 	private Parent createContent(Stage primaryStage) {
 		GridPane gameWithText = new GridPane();
 		GridPane board = new GridPane();
-
+		restart = new RestartButton(primaryStage);
+		restart.setScaleX(0);
+		restart.setScaleY(0);
+		restart.translateXProperty().bind(primaryStage.widthProperty().divide(3));
+		restart.translateYProperty().bind(primaryStage.heightProperty().subtract(650));
 		HBox buttons = new HBox();
 		VBox boardWithButtons = new VBox();
 		board.setGridLinesVisible(true);
@@ -71,6 +76,7 @@ public class Main extends Application {
 		boardWithButtons.getChildren().addAll(board, buttons);
 		gameWithText.add(boardWithButtons, 0, 0, 4, 4);
 		gameWithText.add(gameOverText, 0, 0, 4, 4);
+		gameWithText.add(restart, 0, 0, 4, 4);
 		return gameWithText;
 
 	}
@@ -94,6 +100,41 @@ public class Main extends Application {
 		twoPlayer.translateXProperty().bind(primaryStage.widthProperty().divide(1.5));
 		twoPlayer.translateYProperty().bind(primaryStage.heightProperty().subtract(880));
 		return title;
+	}
+
+	private class RestartButton extends Button {
+
+		public RestartButton(Stage primaryStage) {
+			this.setText("RESTART");
+			this.setFont(new Font(36));
+			this.setStyle("-fx-focus-color: blue;");
+			this.prefWidthProperty().bind(primaryStage.widthProperty().divide(3));
+			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(12));
+			this.setOnMouseClicked(event -> {
+				buttonClickSoundPlayer.play();
+				buttonOnePlayerClicked = false;
+				buttonTwoPlayerClicked = false;
+				gameOver = false;
+				gameOverText.setText("");
+				controller = new ControllerImpl();
+				Scene scene = null;
+				try {
+					scene = new Scene(createTitleScreen(primaryStage));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				primaryStage.setHeight(735);
+				primaryStage.setWidth(800);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+
+				primaryStage.setHeight(735);
+				primaryStage.setWidth(800);
+			});
+
+		}
 	}
 
 	private class TitleButton extends Button {
@@ -162,6 +203,9 @@ public class Main extends Application {
 							if (controller.pieceEndsGame(placePiece, column)) {
 								gameOver = true;
 								winSoundPlayer.play();
+								buttonClickSoundPlayer.stop();
+								restart.setScaleX(1);
+								restart.setScaleY(1);
 								System.out.println("Game Over. Red Wins!");
 								gameOverText.setText("GAME OVER");
 								gameOverText.setStroke(Color.BLACK);
@@ -183,6 +227,9 @@ public class Main extends Application {
 							if (controller.pieceEndsGame(placePiece, column)) {
 								gameOver = true;
 								winSoundPlayer.play();
+								buttonClickSoundPlayer.stop();
+								restart.setScaleX(1);
+								restart.setScaleY(1);
 								System.out.println("Game Over. Yellow Wins!");
 								gameOverText.setText("GAME OVER");
 								gameOverText.setStroke(Color.BLACK);
@@ -205,6 +252,9 @@ public class Main extends Application {
 							if (controller.pieceEndsGame(placePiece, column)) {
 								gameOver = true;
 								winSoundPlayer.play();
+								buttonClickSoundPlayer.stop();
+								restart.setScaleX(1);
+								restart.setScaleY(1);
 								System.out.println("Game Over. Red Wins!");
 								gameOverText.setText("GAME OVER");
 								gameOverText.setStroke(Color.BLACK);
@@ -223,6 +273,9 @@ public class Main extends Application {
 								if (controller.pieceEndsGame(placePiece, aiColumn)) {
 									gameOver = true;
 									winSoundPlayer.play();
+									buttonClickSoundPlayer.stop();
+									restart.setScaleX(1);
+									restart.setScaleY(1);
 									System.out.println("Game Over. Yellow Wins!");
 									gameOverText.setText("GAME OVER");
 									gameOverText.setStroke(Color.BLACK);
@@ -241,6 +294,9 @@ public class Main extends Application {
 				if (controller.isTieGame() && !gameOver) {
 					gameOver = true;
 					winSoundPlayer.play();
+					buttonClickSoundPlayer.stop();
+					restart.setScaleX(1);
+					restart.setScaleY(1);
 					System.out.println("Game Over. Tie Game.");
 					gameOverText.setText("GAME OVER");
 					gameOverText.setStroke(Color.BLACK);
