@@ -92,6 +92,7 @@ public abstract class AbstractBoard implements Board {
 		int maxScore = -1;
 		int maxPos = -1;
 		int droppedAir;
+		int droppedAir2;
 		int score;
 		for (int i = 0; i < 7; i++) {
 			score = 0;
@@ -132,23 +133,37 @@ public abstract class AbstractBoard implements Board {
 										aiPlacePieceHelper(droppedAir, i, 0, 1, color)),
 								aiPlacePieceHelper(droppedAir, i, 1, -1, color)),
 						aiPlacePieceHelper(droppedAir, i, 1, 0, color)), score);
-				score = Math.max(Math.max(Math.max(aiPlacePieceHelper(droppedAir, i, -1, -1, antiColor) +
-						aiPlacePieceHelper(droppedAir, i, 1, 1, antiColor),
-						aiPlacePieceHelper(droppedAir, i, 1, -1, antiColor) + aiPlacePieceHelper(droppedAir, i, -1, 1, antiColor)), 
-						aiPlacePieceHelper(droppedAir, i, 0, 1, antiColor) + aiPlacePieceHelper(droppedAir, i, 0, -1, antiColor)),
-						aiPlacePieceHelper(droppedAir, i, 1, 0, antiColor) + aiPlacePieceHelper(droppedAir, i, -1, 0, antiColor));
+				score = Math.max(
+						Math.max(
+								Math.max(
+										aiPlacePieceHelper(droppedAir, i, -1, -1, antiColor)
+												+ aiPlacePieceHelper(droppedAir, i, 1, 1, antiColor),
+										aiPlacePieceHelper(droppedAir, i, 1, -1, antiColor)
+												+ aiPlacePieceHelper(droppedAir, i, -1, 1, antiColor)),
+								aiPlacePieceHelper(droppedAir, i, 0, 1, antiColor)
+										+ aiPlacePieceHelper(droppedAir, i, 0, -1, antiColor)),
+						aiPlacePieceHelper(droppedAir, i, 1, 0, antiColor)
+								+ aiPlacePieceHelper(droppedAir, i, -1, 0, antiColor));
+			}
+
+			droppedAir2 = dropAir(i);
+			if (droppedAir2 != -1) {
+				board[droppedAir2][i] = new Pieces(antiColor);
+				if (pieceEndsGame(droppedAir2, i)) {
+					score = -1000;
+				}
+				board[droppedAir2][i] = null;
 			}
 			if (score > maxScore) {
 				maxScore = score;
 				maxPos = i;
 			}
 			board[droppedAir][i] = null;
-			
+
 			board[droppedAir][i] = new Pieces(antiColor);
-			if(pieceEndsGame(droppedAir,i))
-			{
+			if (pieceEndsGame(droppedAir, i)) {
 				board[droppedAir][i] = null;
-				
+
 				return i;
 			}
 			board[droppedAir][i] = null;
