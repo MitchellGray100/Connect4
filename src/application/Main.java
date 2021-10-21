@@ -115,8 +115,14 @@ public class Main extends Application {
 				}
 
 				Scene scene = new Scene(createContent(primaryStage));
+
+				primaryStage.setHeight(735);
+				primaryStage.setWidth(800);
 				primaryStage.setScene(scene);
 				primaryStage.show();
+
+				primaryStage.setHeight(735);
+				primaryStage.setWidth(800);
 			});
 
 		}
@@ -258,8 +264,8 @@ public class Main extends Application {
 			circle.scaleYProperty().bind(primaryStage.heightProperty().divide(9));
 			border.widthProperty().bind(primaryStage.widthProperty().divide(7.08));
 			border.heightProperty().bind(primaryStage.heightProperty().divide(7));
-			prefWidthProperty().bind(primaryStage.widthProperty().divide(7));
-			prefHeightProperty().bind(primaryStage.heightProperty().divide(7));
+//			prefWidthProperty().bind(primaryStage.widthProperty().divide(7));
+//			prefHeightProperty().bind(primaryStage.heightProperty().divide(7));
 //			border.widthProperty().bind(primaryStage.widthProperty().multiply(.08));
 //			border.heightProperty().bind(primaryStage.heightProperty().multiply(.1));
 			this.color = color;
@@ -282,7 +288,9 @@ public class Main extends Application {
 
 			primaryStage.setMinHeight(735);
 			primaryStage.setMinWidth(800);
-			primaryStage.setMaxHeight(700);
+			primaryStage.setHeight(735);
+			primaryStage.setWidth(800);
+			primaryStage.setMaxHeight(735);
 			primaryStage.setMaxWidth(800);
 			primaryStage.setScene(titleScene);
 			primaryStage.getIcons().add(titleScreenImage);
