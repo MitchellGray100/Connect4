@@ -38,12 +38,14 @@ public class Main extends Application {
 	private TopButtons[] buttons = new TopButtons[7];
 	private MediaPlayer clinkSoundPlayer;
 	private MediaPlayer winSoundPlayer;
+	private MediaPlayer errorSoundPlayer;
+	private MediaPlayer buttonClickSoundPlayer;
 	private Media sound;
 	private Media winSound;
+	private Media errorSound;
+	private Media buttonClickSound;
 
 	private Parent createContent(Stage primaryStage) {
-		clinkSoundPlayer = new MediaPlayer(sound);
-		winSoundPlayer = new MediaPlayer(winSound);
 		GridPane gameWithText = new GridPane();
 		GridPane board = new GridPane();
 
@@ -74,6 +76,10 @@ public class Main extends Application {
 	}
 
 	private Parent createTitleScreen(Stage primaryStage) throws FileNotFoundException {
+		clinkSoundPlayer = new MediaPlayer(sound);
+		winSoundPlayer = new MediaPlayer(winSound);
+		errorSoundPlayer = new MediaPlayer(errorSound);
+		buttonClickSoundPlayer = new MediaPlayer(buttonClickSound);
 		ImageView titleScreen = new ImageView(titleScreenImage);
 		GridPane title = new GridPane();
 		title.add(titleScreen, 0, 0);
@@ -100,6 +106,8 @@ public class Main extends Application {
 			this.prefWidthProperty().bind(primaryStage.widthProperty().divide(3));
 			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(12));
 			this.setOnMouseClicked(event -> {
+				buttonClickSoundPlayer.stop();
+				buttonClickSoundPlayer.play();
 				if (button == 0) {
 					buttonOnePlayerClicked = true;
 				} else if (button == 1) {
@@ -110,6 +118,7 @@ public class Main extends Application {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			});
+
 		}
 	}
 
@@ -125,8 +134,13 @@ public class Main extends Application {
 			this.prefHeightProperty().bind(primaryStage.heightProperty().divide(7));
 
 			this.setOnMouseClicked(event -> {
-
+				winSoundPlayer.stop();
 				clinkSoundPlayer.stop();
+				errorSoundPlayer.stop();
+
+				if (gameOver) {
+					errorSoundPlayer.play();
+				}
 				int placePiece;
 				if (buttonTwoPlayerClicked) {
 					if (controller.getTurns() % 2 == 0) {
@@ -221,7 +235,6 @@ public class Main extends Application {
 				if (controller.isTieGame() && !gameOver) {
 					gameOver = true;
 					winSoundPlayer.play();
-					winSoundPlayer.stop();
 					System.out.println("Game Over. Tie Game.");
 					gameOverText.setText("GAME OVER");
 					gameOverText.setStroke(Color.BLACK);
@@ -263,6 +276,8 @@ public class Main extends Application {
 			titleScreenImage = new Image(new FileInputStream("Images/ConnectFour.png"));
 			sound = new Media(new File("Images/Chip Drop Sound.wav").toURI().toString());
 			winSound = new Media(new File("Images/Game Won Sound.wav").toURI().toString());
+			errorSound = new Media(new File("Images/Error Sound.wav").toURI().toString());
+			buttonClickSound = new Media(new File("Images/Button Click Sound.wav").toURI().toString());
 			Scene titleScene = new Scene(createTitleScreen(primaryStage));
 
 			primaryStage.setMinHeight(735);
