@@ -17,7 +17,7 @@ public abstract class AbstractBoard implements Board {
 		for (int r = 0; r < 6; r++) {
 			if (board[r][column] != null) {
 				if (r - 1 < 0) {
-					return row;
+					return -1;
 				} else {
 					row = r - 1;
 					break;
@@ -32,6 +32,7 @@ public abstract class AbstractBoard implements Board {
 
 		}
 		return row;
+
 	}
 
 	@Override
@@ -112,6 +113,7 @@ public abstract class AbstractBoard implements Board {
 				if (droppedAir == 0) {
 					if (isTieGame()) {
 						maxScore = 1000;
+						maxPos = i;
 					}
 				}
 
