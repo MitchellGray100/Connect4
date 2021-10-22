@@ -1,6 +1,6 @@
 # Connect4
 MitchellGray100@gmail.com
-https://github.com/MitchellGray100/Chess
+https://github.com/MitchellGray100/Connect4
 
 JavaFX Connect4 Game. Local 2 Player or 1 Player (With AI).
 It's Connect4.
