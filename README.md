@@ -14,7 +14,7 @@ ___
 <h3>
  
 The Title screen. </br>
-One Player mode is for playing against the AI and Two Player mode is for playing against another player on the same machine.
+One Player mode is for playing against the AI and Two Player mode is for playing against another player on the same machine. </br>
  ![Image of The Title Screen](https://github.com/MitchellGray100/Connect4/blob/main/Images/Title%20Screen.PNG)
  
 The game with no pieces placed yet.
