@@ -9,6 +9,17 @@ As a personal project I created a JavaFX representation of a Connect4 game. The 
 ___
 </br>
 
+# Play
+
+<h3>
+  To Play, just download the .exe file: https://github.com/MitchellGray100/Connect4/raw/main/Connect4.exe.
+  
+
+
+</br>
+</br>
+</br>
+
 # Images
 
 <h3>
