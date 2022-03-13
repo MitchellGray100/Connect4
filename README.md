@@ -42,5 +42,8 @@ The game with no pieces placed yet.
  
  Sample Game Play. </br>
  ![GIF of game being played](https://github.com/MitchellGray100/Connect4/blob/main/Images/Connect4%20Gif.gif)
+ 
+ Game Play against AI for mobile users. </br>
+ ![GIF of game being played](https://github.com/MitchellGray100/Connect4/blob/main/Images/SmallerGIF.gif)
 
 
