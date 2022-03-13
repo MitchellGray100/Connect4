@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>C:\Users\r2d2m\IdeaProjects\demo1\Connect4\out\artifacts\Connect4_2_jar\Connect4.jar</jar>
-  <outfile>C:\Users\r2d2m\IdeaProjects\demo1\Connect4\out\artifacts\Connect4_2_jar\Connect4.exe</outfile>
+  <outfile>C:\Users\r2d2m\IdeaProjects\demo1\Connect4\out\artifacts\Connect4_2_jar\Connect42.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
